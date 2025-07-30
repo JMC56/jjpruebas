@@ -33,6 +33,12 @@
       justify-content: center;
       min-height: 100vh;
       padding: 20px; /* Espaciado adicional */
+      animation: fadeIn 1s; /* Animación de entrada */
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     header {
@@ -44,19 +50,10 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
-    h1, h2 {
-      color: white;
-      margin: 0;
-    }
-
     h1 {
+      color: white;
       font-size: 4rem; /* Aumentar el tamaño de la fuente */
       margin-bottom: 1rem;
-    }
-
-    h2 {
-      font-size: 2.5rem; /* Aumentar el tamaño de la fuente */
-      margin-bottom: 2rem;
     }
 
     .modal {
@@ -144,29 +141,6 @@
       border-color: var(--primary); /* Color del borde al enfocar */
       outline: none; /* Sin contorno */
     }
-
-    /* Estilos responsivos */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 3rem; /* Tamaño de fuente más pequeño en móviles */
-      }
-
-      h2 {
-        font-size: 2rem; /* Tamaño de fuente más pequeño en móviles */
-      }
-
-      .chisme-card {
-        padding: 1rem; /* Reducir padding en móviles */
-      }
-
-      .chisme-card h3 {
-        font-size: 1.2rem; /* Tamaño de fuente más pequeño en móviles */
-      }
-
-      .chisme-card p {
-        font-size: 1rem; /* Tamaño de fuente más pequeño en móviles */
-      }
-    }
   </style>
 </head>
 <body>
@@ -177,7 +151,6 @@
   </header>
 
   <section>
-    <h2>Últimos Chismes</h2>
     <div id="chismesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </section>
 
@@ -224,7 +197,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let currentUser            = null;
+    let currentUser              = null;
     let chismeToDelete   = null; // Variable para almacenar el chisme a eliminar
 
     const elements = {
@@ -306,7 +279,7 @@
         const match = Object.values(users).some(user => user.username === username && user.password === password);
         
         if (match) {
-          currentUser            = username;
+          currentUser              = username;
           hideModal('loginModal');
 
           // Eliminar el chisme si se ha seleccionado uno
