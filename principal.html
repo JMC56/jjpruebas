@@ -1,358 +1,344 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JJ Chismes</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JJ Chismes</title>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
 
-  <style>
-    :root {
-      --primary: #FFD700; /* Amarillo */
-      --secondary: #FF4500; /* Rojo */
-      --light: #000000; /* Negro */
-    }
+  <style>
+    :root {
+      --primary: #FFD700;
+      --secondary: #FF4500;
+      --light: #000000;
+    }
 
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(to right, var(--secondary), var(--light));
-      color: white;
-      transition: background-color 0.5s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px; /* Espaciado adicional */
-      animation: fadeIn 1s; /* Animación de entrada */
-    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, var(--secondary), var(--light));
+      color: white;
+      transition: background-color 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      animation: fadeIn 1s;
+    }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-    header {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
-      padding: 4rem 2rem; /* Aumentar el padding vertical */
-      margin-bottom: 2rem;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      width: 100%; /* Asegurarse de que ocupe todo el ancho */
-    }
+    header {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      width: 100%;
+    }
 
-    h1 {
-      color: white;
-      font-size: 6rem; /* Aumentar el tamaño de la fuente */
-      margin-bottom: 1rem;
-    }
+    h1 {
+      color: white;
+      font-size: 8rem;
+      margin-bottom: 1rem;
+    }
 
-    .modal {
-      backdrop-filter: blur(4px);
-    }
+    .modal {
+      backdrop-filter: blur(4px);
+    }
 
-    .login-modal {
-      background-color: rgba(255, 255, 0, 0.9); /* Amarillo con opacidad */
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    }
+    .login-modal {
+      background-color: rgba(255, 255, 0, 0.9);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
 
-    .modal h3 {
-      color: black;
-    }
+    .modal h3 {
+      color: black;
+    }
 
-    .chisme-card {
-      background: white;
-      color: black;
-      border-radius: 1rem;
-      padding: 1.5rem; /* Aumentar el padding */
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s, box-shadow 0.3s;
-      border: 1px solid var(--primary);
-      margin: 1rem; /* Espaciado entre tarjetas */
-    }
+    .chisme-card {
+      background: white;
+      color: black;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.3s;
+      border: 1px solid var(--primary);
+      margin: 1rem;
+    }
 
-    .chisme-card h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1.5rem; /* Aumentar el tamaño de la fuente */
-    }
+    .chisme-card h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+    }
 
-    .chisme-card p {
-      margin: 0;
-      font-size: 1.2rem; /* Aumentar el tamaño de la fuente */
-    }
+    .chisme-card p {
+      margin: 0;
+      font-size: 1.2rem;
+    }
 
-    .chisme-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-    }
+    .chisme-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
 
-    .full-chisme {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      color: black;
-      border-radius: 1rem;
-      padding: 1rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      transition: opacity 0.3s ease;
-    }
+    .full-chisme {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      color: black;
+      border-radius: 1rem;
+      padding: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+    }
 
-    .full-chisme.active {
-      display: block;
-      opacity: 1;
-    }
+    .full-chisme.active {
+      display: block;
+      opacity: 1;
+    }
 
-    .footer {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.1);
-      padding: 0.5rem 1rem;
-      border-radius: 1rem;
-      text-align: center;
-      color: white;
-    }
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      text-align: center;
+      color: white;
+    }
 
-    /* Estilo para los campos de entrada */
-    input {
-      color: black; /* Color del texto */
-      background-color: rgba(255, 255, 255, 0.8); /* Fondo del campo de entrada */
-      border: 1px solid #ccc; /* Borde del campo de entrada */
-      font-size: 1.2rem; /* Aumentar el tamaño de la fuente */
-    }
+    input {
+      color: black;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid #ccc;
+      font-size: 1.2rem;
+    }
 
-    input:focus {
-      border-color: var(--primary); /* Color del borde al enfocar */
-      outline: none; /* Sin contorno */
-    }
+    input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
 
-    /* Estilo para el botón de admin */
-    #adminBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background-color: var(--primary);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem; /* Tamaño del símbolo + */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
-      z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
-    }
+    #adminBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      z-index: 1000;
+    }
 
-    #adminBtn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
-    }
-  </style>
+    #adminBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <h1>Bienvenido al Universo de JJ</h1>
-  </header>
+  <header>
+    <h1>Bienvenido al Universo de JJ</h1>
+  </header>
 
-  <section>
-    <div id="chismesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-  </section>
+  <section>
+    <div id="chismesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </section>
 
-  <!-- Botón de Admin -->
-  <button id="adminBtn">+</button>
+  <button id="adminBtn">+</button>
 
-  <!-- Modal Login -->
-  <div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="login-modal max-w-md w-full mx-4 shadow-xl">
-      <h3 class="text-2xl font-bold mb-6">Ingreso Administrador / Miembro</h3>
-      <form id="loginForm">
-        <input type="text" id="username" placeholder="Usuario" required class="w-full px-4 py-2 mb-4 rounded-lg border" />
-        <input type="password" id="password" placeholder="Contraseña" required class="w-full px-4 py-2 mb-6 rounded-lg border" />
-        <div class="flex justify-between">
-          <div class="space-x-2">
-            <button type="button" id="closeLogin" class="bg-gray-300 text-black px-4 py-2 rounded-lg">Cancelar</button>
-            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg">Entrar</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+  <div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="login-modal max-w-md w-full mx-4 shadow-xl">
+      <h3 class="text-2xl font-bold mb-6">Ingreso Administrador / Miembro</h3>
+      <form id="loginForm">
+        <input type="text" id="username" placeholder="Usuario" required class="w-full px-4 py-2 mb-4 rounded-lg border" />
+        <input type="password" id="password" placeholder="Contraseña" required class="w-full px-4 py-2 mb-6 rounded-lg border" />
+        <div class="flex justify-between">
+          <div class="space-x-2">
+            <button type="button" id="closeLogin" class="bg-gray-300 text-black px-4 py-2 rounded-lg">Cancelar</button>
+            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg">Entrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
-  <!-- Caja de Chisme Completo -->
-  <div id="fullChisme" class="full-chisme">
-    <button id="closeFullChisme" class="bg-gray-300 text-black px-4 py-2 rounded-lg">Cerrar</button>
-    <h3 id="fullChismeTitle" class="text-xl font-bold"></h3>
-    <p id="fullChismeContent"></p>
-  </div>
+  <div id="fullChisme" class="full-chisme">
+    <button id="closeFullChisme" class="bg-gray-300 text-black px-4 py-2 rounded-lg">Cerrar</button>
+    <h3 id="fullChismeTitle" class="text-xl font-bold"></h3>
+    <p id="fullChismeContent"></p>
+  </div>
 
-  <!-- Footer -->
-  <div class="footer">Hecho de Corazón 💗</div>
+  <div class="footer">Hecho de Corazón 💗</div>
 
-  <script>
-    // Configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDbp0nzU1Rt01Nar6on1YQqLFOxPDPxKzA",
-      authDomain: "jj-chismes.firebaseapp.com",
-      databaseURL: "https://jj-chismes-default-rtdb.firebaseio.com",
-      projectId: "jj-chismes",
-      storageBucket: "jj-chismes.firebasestorage.app",
-      messagingSenderId: "893502208868",
-      appId: "1:893502208868:web:2d484a975e174310205871"
-    };
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbp0nzU1Rt01Nar6on1YQqLFOxPDPxKzA",
+      authDomain: "jj-chismes.firebaseapp.com",
+      databaseURL: "https://jj-chismes-default-rtdb.firebaseio.com",
+      projectId: "jj-chismes",
+      storageBucket: "jj-chismes.firebasestorage.app",
+      messagingSenderId: "893502208868",
+      appId: "1:893502208868:web:2d484a975e174310205871"
+    };
 
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    // Definir usuarios y contraseñas
-    const users = [
-      { username: "admin1", password: "pass1" },
-      { username: "admin2", password: "pass2" },
-      { username: "admin3", password: "pass3" },
-      { username: "admin4", password: "pass4" },
-      { username: "admin5", password: "pass5" },
-      { username: "admin6", password: "pass6" },
-      { username: "admin7", password: "pass7" },
-      { username: "admin8", password: "pass8" },
-      { username: "admin9", password: "pass9" },
-      { username: "admin10", password: "pass10" }
-    ];
+    const users = [
+      { username: "admin1", password: "pass1" },
+      { username: "admin2", password: "pass2" },
+      { username: "admin3", password: "pass3" },
+      { username: "admin4", password: "pass4" },
+      { username: "admin5", password: "pass5" },
+      { username: "admin6", password: "pass6" },
+      { username: "admin7", password: "pass7" },
+      { username: "admin8", password: "pass8" },
+      { username: "admin9", password: "pass9" },
+      { username: "admin10", password: "pass10" }
+    ];
 
-    let currentUser                   = null;
-    let chismeToDelete   = null; // Variable para almacenar el chisme a eliminar
+    let currentUser = null;
+    let chismeToDelete = null;
 
-    const elements = {
-      adminBtn: document.getElementById('adminBtn'),
-      loginModal: document.getElementById('loginModal'),
-      loginForm: document.getElementById('loginForm'),
-      username: document.getElementById('username'),
-      password: document.getElementById('password'),
-      chismesContainer: document.getElementById('chismesContainer'),
-      closeLogin: document.getElementById('closeLogin'),
-      fullChisme: document.getElementById('fullChisme'),
-      fullChismeTitle: document.getElementById('fullChismeTitle'),
-      fullChismeContent: document.getElementById('fullChismeContent'),
-      closeFullChisme: document.getElementById('closeFullChisme'),
-    };
+    const elements = {
+      adminBtn: document.getElementById('adminBtn'),
+      loginModal: document.getElementById('loginModal'),
+      loginForm: document.getElementById('loginForm'),
+      username: document.getElementById('username'),
+      password: document.getElementById('password'),
+      chismesContainer: document.getElementById('chismesContainer'),
+      closeLogin: document.getElementById('closeLogin'),
+      fullChisme: document.getElementById('fullChisme'),
+      fullChismeTitle: document.getElementById('fullChismeTitle'),
+      fullChismeContent: document.getElementById('fullChismeContent'),
+      closeFullChisme: document.getElementById('closeFullChisme'),
+    };
 
-    function showModal(id) { elements[id].classList.remove('hidden'); }
-    function hideModal(id) { elements[id].classList.add('hidden'); }
+    function showModal(id) { elements[id].classList.remove('hidden'); }
+    function hideModal(id) { elements[id].classList.add('hidden'); }
 
-    function loadChismes() {
-      db.ref('chismes').orderByChild('timestamp').on('value', (snapshot) => {
-        elements.chismesContainer.innerHTML = '';
-        const chismesData = snapshot.val() || {};
-        
-        const chismesArray = Object.entries(chismesData).map(([id, chisme]) => ({
-          id,
-          ...chisme
-        })).sort((a, b) => b.timestamp - a.timestamp);
+    function loadChismes() {
+      db.ref('chismes').orderByChild('timestamp').on('value', (snapshot) => {
+        elements.chismesContainer.innerHTML = '';
+        const chismesData = snapshot.val() || {};
 
-        if (chismesArray.length === 0) {
-          elements.chismesContainer.innerHTML = '<p class="text-purple-200 text-center">No hay chismes aún</p>';
-          return;
-        }
+        const chismesArray = Object.entries(chismesData).map(([id, chisme]) => ({
+          id,
+          ...chisme
+        })).sort((a, b) => b.timestamp - a.timestamp);
 
-        chismesArray.forEach(chisme => {
-          const card = document.createElement('div');
-          card.className = 'chisme-card';
-          card.innerHTML = `
-            <h3 class="text-xl font-bold">${chisme.title}</h3>
-            <p class="chisme-content">${chisme.content.length > 100 ? chisme.content.substring(0, 100) + '...' : chisme.content}</p>
-            <button class="bg-red-500 text-white px-2 py-1 rounded-lg delete-chisme" data-id="${chisme.id}">Eliminar</button>
-          `;
-          elements.chismesContainer.appendChild(card);
-        });
+        if (chismesArray.length === 0) {
+          elements.chismesContainer.innerHTML = '<p class="text-purple-200 text-center">No hay chismes aún</p>';
+          return;
+        }
 
-        // Agregar evento para eliminar chismes
-        document.querySelectorAll('.delete-chisme').forEach(button => {
-          button.addEventListener('click', function() {
-            chismeToDelete = this.getAttribute('data-id'); // Guardar el ID del chisme a eliminar
-            hideModal('loginModal'); // Ocultar el modal actual
-            showModal('loginModal'); // Mostrar el modal de login
-          });
-        });
+        chismesArray.forEach(chisme => {
+          const card = document.createElement('div');
+          card.className = 'chisme-card';
+          card.innerHTML = `
+            <h3 class="text-xl font-bold">${chisme.title}</h3>
+            <p class="chisme-content">${chisme.content.length > 100 ? chisme.content.substring(0, 100) + '...' : chisme.content}</p>
+            <button class="bg-red-500 text-white px-2 py-1 rounded-lg delete-chisme" data-id="${chisme.id}">Eliminar</button>
+          `;
+          elements.chismesContainer.appendChild(card);
+        });
 
-        // Agregar evento para mostrar chisme completo
-        document.querySelectorAll('.chisme-content').forEach((content, index) => {
-          content.addEventListener('click', function() {
-            const fullChisme = chismesArray[index];
-            elements.fullChismeTitle.innerText = fullChisme.title;
-            elements.fullChismeContent.innerText = fullChisme.content;
-            elements.fullChisme.classList.add('active');
-          });
-        });
-      });
-    }
+        document.querySelectorAll('.delete-chisme').forEach(button => {
+          button.addEventListener('click', function() {
+            chismeToDelete = this.getAttribute('data-id');
+            hideModal('loginModal');
+            showModal('loginModal');
+          });
+        });
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const username = elements.username.value.trim();
-      const password = elements.password.value.trim();
+        document.querySelectorAll('.chisme-content').forEach((content, index) => {
+          content.addEventListener('click', function() {
+            const fullChisme = chismesArray[index];
+            elements.fullChismeTitle.innerText = fullChisme.title;
+            elements.fullChismeContent.innerText = fullChisme.content;
+            elements.fullChisme.classList.add('active');
+          });
+        });
+      });
+    }
 
-      if (!username || !password) {
-        alert('Por favor completa todos los campos');
-        return;
-      }
+    function handleLogin(e) {
+      e.preventDefault();
+      const username = elements.username.value.trim();
+      const password = elements.password.value.trim();
 
-      const user = users.find(user => user.username === username && user.password === password);
+      if (!username || !password) {
+        alert('Por favor completa todos los campos');
+        return;
+      }
 
-      if (user) {
-        currentUser                   = username;
-        hideModal('loginModal');
+      const user = users.find(user => user.username === username && user.password === password);
 
-        // Eliminar el chisme si se ha seleccionado uno
-        if (chismeToDelete) {
-          db.ref('chismes/' + chismeToDelete).remove().then(() => {
-            loadChismes(); // Recargar chismes después de eliminar
-            chismeToDelete = null; // Reiniciar la variable
-          }).catch(error => {
-            console.error('Error al eliminar chisme:', error);
-          });
-        } else {
-          loadChismes(); // Cargar chismes al iniciar sesión
-        }
-      } else {
-        alert('Credenciales inválidas');
-      }
-    }
+      if (user) {
+        currentUser = username;
+        hideModal('loginModal');
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadChismes();
+        if (chismeToDelete) {
+          db.ref('chismes/' + chismeToDelete).remove().then(() => {
+            loadChismes();
+            chismeToDelete = null;
+          }).catch(error => {
+            console.error('Error al eliminar chisme:', error);
+          });
+        } else {
+          loadChismes();
+        }
+      } else {
+        alert('Credenciales inválidas');
+      }
+    }
 
-      elements.adminBtn.addEventListener('click', () => showModal('loginModal'));
-      elements.loginForm.addEventListener('submit', handleLogin);
-      elements.closeLogin.addEventListener('click', () => hideModal('loginModal'));
-      elements.closeFullChisme.addEventListener('click', () => {
-        elements.fullChisme.classList.remove('active');
-      });
-    });
+    document.addEventListener('DOMContentLoaded', () => {
+      loadChismes();
+      elements.adminBtn.addEventListener('click', () => showModal('loginModal'));
+      elements.loginForm.addEventListener('submit', handleLogin);
+      elements.closeLogin.addEventListener('click', () => hideModal('loginModal'));
+      elements.closeFullChisme.addEventListener('click', () => {
+        elements.fullChisme.classList.remove('active');
+      });
+    });
 
-    // Redirigir a login.html al cerrar el navegador o reiniciar la página
-    window.onbeforeunload = function() {
-      return "¿Estás seguro de que deseas salir?"; // Mensaje de confirmación
-    };
-  </script>
+    window.onbeforeunload = function() {
+      return "¿Estás seguro de que deseas salir?";
+    };
+  </script>
 
 </body>
 </html>
