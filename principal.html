@@ -44,15 +44,16 @@
     header {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 1rem;
-      padding: 3rem; /* Aumentar el padding */
+      padding: 4rem 2rem; /* Aumentar el padding vertical */
       margin-bottom: 2rem;
       text-align: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      width: 100%; /* Asegurarse de que ocupe todo el ancho */
     }
 
     h1 {
       color: white;
-      font-size: 4rem; /* Aumentar el tamaño de la fuente */
+      font-size: 3rem; /* Tamaño de la fuente del encabezado */
       margin-bottom: 1rem;
     }
 
@@ -197,7 +198,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let currentUser              = null;
+    let currentUser               = null;
     let chismeToDelete   = null; // Variable para almacenar el chisme a eliminar
 
     const elements = {
@@ -279,7 +280,7 @@
         const match = Object.values(users).some(user => user.username === username && user.password === password);
         
         if (match) {
-          currentUser              = username;
+          currentUser               = username;
           hideModal('loginModal');
 
           // Eliminar el chisme si se ha seleccionado uno
