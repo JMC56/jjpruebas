@@ -53,7 +53,7 @@
 
     h1 {
       color: white;
-      font-size: 3rem; /* Tamaño de la fuente del encabezado */
+      font-size: 4rem; /* Aumentar el tamaño de la fuente */
       margin-bottom: 1rem;
     }
 
@@ -148,7 +148,7 @@
 
   <header>
     <h1>Bienvenido al Universo de JJ</h1>
-    <button id="adminBtn" class="bg-white text-black px-6 py-2 rounded-full font-semibold shadow">Acceder como Admin</button>
+    <button id="adminBtn" class="bg-white text-black px-4 py-2 rounded-full font-semibold shadow">Acceder como Admin</button>
   </header>
 
   <section>
@@ -198,7 +198,21 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let currentUser               = null;
+    // Definir usuarios y contraseñas
+    const users = [
+      { username: "admin1", password: "pass1" },
+      { username: "admin2", password: "pass2" },
+      { username: "admin3", password: "pass3" },
+      { username: "admin4", password: "pass4" },
+      { username: "admin5", password: "pass5" },
+      { username: "admin6", password: "pass6" },
+      { username: "admin7", password: "pass7" },
+      { username: "admin8", password: "pass8" },
+      { username: "admin9", password: "pass9" },
+      { username: "admin10", password: "pass10" }
+    ];
+
+    let currentUser                 = null;
     let chismeToDelete   = null; // Variable para almacenar el chisme a eliminar
 
     const elements = {
@@ -275,29 +289,26 @@
         return;
       }
 
-      db.ref('users').once('value').then(snapshot => {
-        const users = snapshot.val() || {};
-        const match = Object.values(users).some(user => user.username === username && user.password === password);
-        
-        if (match) {
-          currentUser               = username;
-          hideModal('loginModal');
+      const user = users.find(user => user.username === username && user.password === password);
 
-          // Eliminar el chisme si se ha seleccionado uno
-          if (chismeToDelete) {
-            db.ref('chismes/' + chismeToDelete).remove().then(() => {
-              loadChismes(); // Recargar chismes después de eliminar
-              chismeToDelete = null; // Reiniciar la variable
-            }).catch(error => {
-              console.error('Error al eliminar chisme:', error);
-            });
-          } else {
-            loadChismes(); // Cargar chismes al iniciar sesión
-          }
+      if (user) {
+        currentUser                 = username;
+        hideModal('loginModal');
+
+        // Eliminar el chisme si se ha seleccionado uno
+        if (chismeToDelete) {
+          db.ref('chismes/' + chismeToDelete).remove().then(() => {
+            loadChismes(); // Recargar chismes después de eliminar
+            chismeToDelete = null; // Reiniciar la variable
+          }).catch(error => {
+            console.error('Error al eliminar chisme:', error);
+          });
         } else {
-          alert('Credenciales inválidas');
+          loadChismes(); // Cargar chismes al iniciar sesión
         }
-      });
+      } else {
+        alert('Credenciales inválidas');
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
