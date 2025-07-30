@@ -32,12 +32,13 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      padding: 20px; /* Espaciado adicional */
     }
 
     header {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 1rem;
-      padding: 2rem;
+      padding: 3rem; /* Aumentar el padding */
       margin-bottom: 2rem;
       text-align: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -49,12 +50,12 @@
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 4rem; /* Aumentar el tamaño de la fuente */
       margin-bottom: 1rem;
     }
 
     h2 {
-      font-size: 2rem;
+      font-size: 2.5rem; /* Aumentar el tamaño de la fuente */
       margin-bottom: 2rem;
     }
 
@@ -77,18 +78,21 @@
       background: white;
       color: black;
       border-radius: 1rem;
-      padding: 1rem;
+      padding: 1.5rem; /* Aumentar el padding */
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       transition: transform 0.2s, box-shadow 0.3s;
       border: 1px solid var(--primary);
+      margin: 1rem; /* Espaciado entre tarjetas */
     }
 
     .chisme-card h3 {
       margin-bottom: 0.5rem;
+      font-size: 1.5rem; /* Aumentar el tamaño de la fuente */
     }
 
     .chisme-card p {
       margin: 0;
+      font-size: 1.2rem; /* Aumentar el tamaño de la fuente */
     }
 
     .chisme-card:hover {
@@ -133,11 +137,35 @@
       color: black; /* Color del texto */
       background-color: rgba(255, 255, 255, 0.8); /* Fondo del campo de entrada */
       border: 1px solid #ccc; /* Borde del campo de entrada */
+      font-size: 1.2rem; /* Aumentar el tamaño de la fuente */
     }
 
     input:focus {
       border-color: var(--primary); /* Color del borde al enfocar */
       outline: none; /* Sin contorno */
+    }
+
+    /* Estilos responsivos */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 3rem; /* Tamaño de fuente más pequeño en móviles */
+      }
+
+      h2 {
+        font-size: 2rem; /* Tamaño de fuente más pequeño en móviles */
+      }
+
+      .chisme-card {
+        padding: 1rem; /* Reducir padding en móviles */
+      }
+
+      .chisme-card h3 {
+        font-size: 1.2rem; /* Tamaño de fuente más pequeño en móviles */
+      }
+
+      .chisme-card p {
+        font-size: 1rem; /* Tamaño de fuente más pequeño en móviles */
+      }
     }
   </style>
 </head>
@@ -178,13 +206,7 @@
   </div>
 
   <!-- Footer -->
-  <div class="footer">Hecho de Corazon 💗</div>
-
-  <!-- Música de fondo -->
-  <audio id="backgroundMusic" loop>
-    <source src="https://www.youtube.com/watch?v=SXySxLgCV-8" type="audio/mpeg">
-    Tu navegador no soporta audio.
-  </audio>
+  <div class="footer">Hecho de Corazón 💗</div>
 
   <script>
     // Configuración de Firebase
@@ -202,7 +224,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let currentUser           = null;
+    let currentUser            = null;
     let chismeToDelete   = null; // Variable para almacenar el chisme a eliminar
 
     const elements = {
@@ -217,7 +239,6 @@
       fullChismeTitle: document.getElementById('fullChismeTitle'),
       fullChismeContent: document.getElementById('fullChismeContent'),
       closeFullChisme: document.getElementById('closeFullChisme'),
-      backgroundMusic: document.getElementById('backgroundMusic'),
     };
 
     function showModal(id) { elements[id].classList.remove('hidden'); }
@@ -285,7 +306,7 @@
         const match = Object.values(users).some(user => user.username === username && user.password === password);
         
         if (match) {
-          currentUser           = username;
+          currentUser            = username;
           hideModal('loginModal');
 
           // Eliminar el chisme si se ha seleccionado uno
@@ -307,7 +328,6 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadChismes();
-      elements.backgroundMusic.play(); // Reproducir música de fondo
 
       elements.adminBtn.addEventListener('click', () => showModal('loginModal'));
       elements.loginForm.addEventListener('submit', handleLogin);
@@ -319,7 +339,7 @@
 
     // Redirigir a login.html al cerrar el navegador o reiniciar la página
     window.onbeforeunload = function() {
-      window.location.href = 'login.html';
+      return "¿Estás seguro de que deseas salir?"; // Mensaje de confirmación
     };
   </script>
 
