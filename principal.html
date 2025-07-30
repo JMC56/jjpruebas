@@ -53,7 +53,7 @@
 
     h1 {
       color: white;
-      font-size: 5rem; /* Aumentar el tamaño de la fuente */
+      font-size: 6rem; /* Aumentar el tamaño de la fuente */
       margin-bottom: 1rem;
     }
 
@@ -142,18 +142,44 @@
       border-color: var(--primary); /* Color del borde al enfocar */
       outline: none; /* Sin contorno */
     }
+
+    /* Estilo para el botón de admin */
+    #adminBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem; /* Tamaño del símbolo + */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+    }
+
+    #adminBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Bienvenido al Universo de JJ</h1>
-    <button id="adminBtn" class="bg-white text-black px-4 py-2 rounded-full font-semibold shadow">Acceder como Admin</button>
   </header>
 
   <section>
     <div id="chismesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </section>
+
+  <!-- Botón de Admin -->
+  <button id="adminBtn">+</button>
 
   <!-- Modal Login -->
   <div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -212,7 +238,7 @@
       { username: "admin10", password: "pass10" }
     ];
 
-    let currentUser                 = null;
+    let currentUser                   = null;
     let chismeToDelete   = null; // Variable para almacenar el chisme a eliminar
 
     const elements = {
@@ -292,7 +318,7 @@
       const user = users.find(user => user.username === username && user.password === password);
 
       if (user) {
-        currentUser                 = username;
+        currentUser                   = username;
         hideModal('loginModal');
 
         // Eliminar el chisme si se ha seleccionado uno
