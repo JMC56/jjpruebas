@@ -18,9 +18,10 @@
 
   <style>
     :root {
-      --primary: #FFD700;
-      --secondary: #FF4500;
-      --light: #000000;
+      --primary: #FFD700; /* Amarillo */
+      --secondary: #FF4500; /* Rojo */
+      --light: #000000; /* Negro */
+      --admin-color: #FFA500; /* Naranja */
     }
 
     body {
@@ -45,19 +46,53 @@
     header {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 1rem;
-      padding: 4rem 2rem;
+      padding: 2rem;
       margin-bottom: 2rem;
       text-align: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       width: 100%;
+      position: relative; /* Para posicionar el botón de tienda */
     }
 
-    h1.arcade-title {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 2.5rem;
-      line-height: 1.4;
+    h1 {
+      font-family: 'Press Start 2P', cursive; /* Cambiar a fuente Arcade */
       color: white;
+      font-size: 6rem;
       margin-bottom: 1rem;
+    }
+
+    .admin-link {
+      background-color: var(--admin-color);
+      color: white;
+      padding: 10px 15px; /* Espaciado reducido */
+      border-radius: 1rem;
+      text-decoration: none;
+      font-size: 1rem; /* Tamaño de la fuente más pequeño */
+      transition: background-color 0.3s;
+      margin-top: 10px; /* Espacio entre el título y el botón */
+    }
+
+    .admin-link:hover {
+      background-color: var(--primary);
+    }
+
+    .tienda-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: black;
+      padding: 10px 20px;
+      border-radius: 1rem;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: transform 0.3s, background-color 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .tienda-button:hover {
+      transform: scale(1.05);
+      background-color: #ffcc00; /* Un tono más claro de amarillo */
     }
 
     .modal {
@@ -65,14 +100,27 @@
     }
 
     .login-modal {
-      background-color: rgba(255, 255, 0, 0.9);
+      background-color: rgba(255, 255, 255, 0); /* Fondo completamente transparente */
       border-radius: 1rem;
       padding: 2rem;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
     .modal h3 {
+      color: white; /* Cambiar a color blanco */
+    }
+
+    input, textarea {
       color: black;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid #ccc;
+      font-size: 1.2rem;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      background-color: rgba(255, 255, 0, 0.5); /* Ilumina en amarillo */
     }
 
     .chisme-card {
@@ -84,6 +132,7 @@
       transition: transform 0.2s, box-shadow 0.3s;
       border: 1px solid var(--primary);
       margin: 1rem;
+      cursor: pointer; /* Cambiar el cursor al pasar sobre la caja */
     }
 
     .chisme-card h3 {
@@ -94,6 +143,10 @@
     .chisme-card p {
       margin: 0;
       font-size: 1.2rem;
+      overflow: hidden; /* Ocultar el desbordamiento */
+      display: -webkit-box; /* Para el truncamiento */
+      -webkit-line-clamp: 2; /* Número de líneas a mostrar */
+      -webkit-box-orient: vertical; /* Orientación vertical */
     }
 
     .chisme-card:hover {
@@ -107,7 +160,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: white;
+      background: rgba(255, 255, 255, 0.9);
       color: black;
       border-radius: 1rem;
       padding: 1rem;
@@ -133,53 +186,33 @@
       color: white;
     }
 
-    input {
-      color: black;
-      background-color: rgba(255, 255, 255, 0.8);
-      border: 1px solid #ccc;
-      font-size: 1.2rem;
-    }
-
-    input:focus {
-      border-color: var(--primary);
-      outline: none;
-    }
-
-    #adminBtn {
+    .notification {
       position: fixed;
-      bottom: 20px;
+      top: 20px;
       right: 20px;
-      width: 60px;
-      height: 60px;
-      background-color: var(--primary);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
+      background: rgba(0, 255, 0, 0.8);
+      color: black;
+      padding: 10px 20px;
+      border-radius: 1rem;
+      display: none; /* Ocultar por defecto */
       z-index: 1000;
-    }
-
-    #adminBtn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1 class="arcade-title">Bienvenido al Universo</h1>
+    <h1>Bienvenido al Universo de JJ</h1>
+    <a href="#" id="adminLink" class="admin-link">Acceso Admin</a>
+    <a href="https://storejjchismes.vercel.app/" class="tienda-button">Tienda</a> <!-- Botón de Tienda -->
   </header>
 
   <section>
     <div id="chismesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </section>
 
-  <button id="adminBtn">+</button>
+  <!-- Notificación -->
+  <div id="notification" class="notification">Se ha registrado con éxito</div>
 
   <!-- Modal Login -->
   <div id="loginModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -191,7 +224,24 @@
         <div class="flex justify-between">
           <div class="space-x-2">
             <button type="button" id="closeLogin" class="bg-gray-300 text-black px-4 py-2 rounded-lg">Cancelar</button>
-            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-lg">Entrar</button>
+            <button type="submit" class="bg-yellow-500 text-black px-4 py-2 rounded-lg">Entrar</button> <!-- Botón de Entrar en amarillo -->
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Agregar Chisme -->
+  <div id="addChismeModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="add-chisme-modal max-w-md w-full mx-4 shadow-xl">
+      <h3 class="text-2xl font-bold mb-6">Agregar Nuevo Chisme</h3>
+      <form id="addChismeForm">
+        <input type="text" id="chismeTitle" placeholder="Título" required class="w-full px-4 py-2 mb-4 rounded-lg border" />
+        <textarea id="chismeContent" placeholder="Contenido" required class="w-full px-4 py-2 mb-6 rounded-lg border"></textarea>
+        <div class="flex justify-between">
+          <div class="space-x-2">
+            <button type="button" id="closeAddChisme" class="bg-gray-300 text-black px-4 py-2 rounded-lg">Cancelar</button>
+            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg">Agregar</button>
           </div>
         </div>
       </form>
@@ -234,11 +284,10 @@
       { username: "admin10", password: "pass10" }
     ];
 
-    let currentUser = null;
-    let chismeToDelete = null;
+    let currentUser            = null;
 
     const elements = {
-      adminBtn: document.getElementById('adminBtn'),
+      adminLink: document.getElementById('adminLink'),
       loginModal: document.getElementById('loginModal'),
       loginForm: document.getElementById('loginForm'),
       username: document.getElementById('username'),
@@ -249,6 +298,12 @@
       fullChismeTitle: document.getElementById('fullChismeTitle'),
       fullChismeContent: document.getElementById('fullChismeContent'),
       closeFullChisme: document.getElementById('closeFullChisme'),
+      addChismeModal: document.getElementById('addChismeModal'),
+      addChismeForm: document.getElementById('addChismeForm'),
+      chismeTitle: document.getElementById('chismeTitle'),
+      chismeContent: document.getElementById('chismeContent'),
+      closeAddChisme: document.getElementById('closeAddChisme'),
+      notification: document.getElementById('notification'),
     };
 
     function showModal(id) { elements[id].classList.remove('hidden'); }
@@ -258,7 +313,7 @@
       db.ref('chismes').orderByChild('timestamp').on('value', (snapshot) => {
         elements.chismesContainer.innerHTML = '';
         const chismesData = snapshot.val() || {};
-
+        
         const chismesArray = Object.entries(chismesData).map(([id, chisme]) => ({
           id,
           ...chisme
@@ -275,26 +330,13 @@
           card.innerHTML = `
             <h3 class="text-xl font-bold">${chisme.title}</h3>
             <p class="chisme-content">${chisme.content.length > 100 ? chisme.content.substring(0, 100) + '...' : chisme.content}</p>
-            <button class="bg-red-500 text-white px-2 py-1 rounded-lg delete-chisme" data-id="${chisme.id}">Eliminar</button>
           `;
-          elements.chismesContainer.appendChild(card);
-        });
-
-        document.querySelectorAll('.delete-chisme').forEach(button => {
-          button.addEventListener('click', function() {
-            chismeToDelete = this.getAttribute('data-id');
-            hideModal('loginModal');
-            showModal('loginModal');
-          });
-        });
-
-        document.querySelectorAll('.chisme-content').forEach((content, index) => {
-          content.addEventListener('click', function() {
-            const fullChisme = chismesArray[index];
-            elements.fullChismeTitle.innerText = fullChisme.title;
-            elements.fullChismeContent.innerText = fullChisme.content;
+          card.addEventListener('click', function() {
+            elements.fullChismeTitle.innerText = chisme.title;
+            elements.fullChismeContent.innerText = chisme.content;
             elements.fullChisme.classList.add('active');
           });
+          elements.chismesContainer.appendChild(card);
         });
       });
     }
@@ -312,29 +354,60 @@
       const user = users.find(user => user.username === username && user.password === password);
 
       if (user) {
-        currentUser = username;
+        currentUser            = username;
         hideModal('loginModal');
-
-        if (chismeToDelete) {
-          db.ref('chismes/' + chismeToDelete).remove().then(() => {
-            loadChismes();
-            chismeToDelete = null;
-          }).catch(error => {
-            console.error('Error al eliminar chisme:', error);
-          });
-        } else {
-          loadChismes();
-        }
+        showModal('addChismeModal'); // Mostrar el modal para agregar chisme
       } else {
         alert('Credenciales inválidas');
       }
     }
 
+    function handleAddChisme(e) {
+      e.preventDefault();
+      const title = elements.chismeTitle.value.trim();
+      const content = elements.chismeContent.value.trim();
+
+      if (!title || !content) {
+        alert('Por favor completa todos los campos');
+        return;
+      }
+
+      const newChisme = {
+        title: title,
+        content: content,
+        timestamp: Date.now()
+      };
+
+      db.ref('chismes').push(newChisme).then(() => {
+        loadChismes(); // Recargar chismes después de agregar
+        hideModal('addChismeModal'); // Ocultar el modal de agregar chisme
+        elements.chismeTitle.value = ''; // Limpiar el campo de título
+        elements.chismeContent.value = ''; // Limpiar el campo de contenido
+        showNotification('Se ha registrado con éxito'); // Mostrar notificación
+      }).catch(error => {
+        console.error('Error al agregar chisme:', error);
+      });
+    }
+
+    function showNotification(message) {
+      elements.notification.innerText = message;
+      elements.notification.style.display = 'block';
+      setTimeout(() => {
+        elements.notification.style.display = 'none';
+      }, 3000); // Ocultar después de 3 segundos
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       loadChismes();
-      elements.adminBtn.addEventListener('click', () => showModal('loginModal'));
+
+      elements.adminLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showModal('loginModal');
+      });
       elements.loginForm.addEventListener('submit', handleLogin);
       elements.closeLogin.addEventListener('click', () => hideModal('loginModal'));
+      elements.addChismeForm.addEventListener('submit', handleAddChisme);
+      elements.closeAddChisme.addEventListener('click', () => hideModal('addChismeModal'));
       elements.closeFullChisme.addEventListener('click', () => {
         elements.fullChisme.classList.remove('active');
       });
